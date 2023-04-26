@@ -21,6 +21,7 @@ class PrimeField:
         return FieldElement(self, args[0])
 
     def add(self, a, b):
+        return self.reduce(a+b)
         """
         Add two numbers in the field and return the reduced field element.
         """
@@ -63,6 +64,8 @@ class PrimeField:
         raise NotImplementedError("TODO: Implement me plx")
 
     def reduce(self, a):
+        return a % self.mod
+       
         """
         Return the smallest representative of number a within the field.
         """
