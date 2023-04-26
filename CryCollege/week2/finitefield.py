@@ -43,7 +43,7 @@ class PrimeField:
         raise NotImplementedError("TODO: Implement me plx")
 
     def div(self, a, b):
-        
+        return a *pow(b,-1,self.mod) % self.mod
        
         """
         Divide a by b
@@ -70,6 +70,7 @@ class PrimeField:
         if not isinstance(exponent, int):
             raise ValueError("Only integers allowed as exponents.")
         
+        return base**exponent % self.mod
         
         raise NotImplementedError("TODO: Implement me plx")
 
