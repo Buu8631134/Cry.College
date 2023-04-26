@@ -28,30 +28,38 @@ class PrimeField:
         raise NotImplementedError("TODO: Implement me plx")
 
     def sub(self, a, b):
+        return self.reduce(a-b)
         """
         Subtract two numbers in the field and return the reduced field element.
         """
         raise NotImplementedError("TODO: Implement me plx")
 
     def mul(self, a, b):
+        return self.reduce(a*b)
         """
         Multiply two numbers in the field and return the reduced field element.
         """
         raise NotImplementedError("TODO: Implement me plx")
 
     def div(self, a, b):
+        
+       
         """
         Divide a by b
         """
         raise NotImplementedError("TODO: Implement me plx")
 
     def equiv(self, a, b):
+       
+        return self.reduce(a) == self.reduce(b)
+       
         """
         Check if two numbers are equivalent in the field.
         """
         raise NotImplementedError("TODO: Implement me plx")
 
     def pow(self, base, exponent):
+        
         """
         Calculate the exponentiation base**exponent within the field.
         Uses square and multiply.
@@ -60,6 +68,7 @@ class PrimeField:
             exponent = exponent.elem
         if not isinstance(exponent, int):
             raise ValueError("Only integers allowed as exponents.")
+        
         
         raise NotImplementedError("TODO: Implement me plx")
 
