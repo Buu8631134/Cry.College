@@ -29,6 +29,13 @@ class WeierstrassCurve(EllipticCurve):
         return point is self.poif or self.calc_y_sq(point.x) == point.y**2
 
     def add(self, P, Q):
+        
+       
+
+
+
+       
+
         """
          Sum of the points P and Q.
          Rules: https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication
@@ -38,6 +45,8 @@ class WeierstrassCurve(EllipticCurve):
                 "Points not on basic_curves {}: {}, {}: {}".format(P, self.is_on_curve(P), Q, self.is_on_curve(Q)))
 
         raise NotImplementedError("TODO: Implement me plx")
+        
+       
 
     def __str__(self):
         return "y^2 = x^3 + {}x + {} over {}".format(self.a, self.b, self.field)

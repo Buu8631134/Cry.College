@@ -55,6 +55,31 @@ class EllipticCurve:
         return self.double_and_add(point, scalar)
 
     def double_and_add(self, point, scalar):
+        
+        x = point.x 
+        y = point.y 
+
+        x1 = 0 
+        y1 = 0
+
+        scalar = list(bin(scalar)[2:])
+        for bit in scalar: 
+            if scalar == 1: 
+                x1 = x
+                y1 = y
+
+                x = x*2 
+                y = y*2 
+            else: 
+             x = x*2
+             y = y*2
+
+
+        point.x = x1
+        point.y = y1   
+
+        return point
+
         """
         Do scalar multiplication Q = dP using double and add.
         As here: https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
