@@ -3,8 +3,8 @@ import sys
 
 
 
-from CryCollege.week3.elliptic_curve import EllipticCurve, AffinePoint
-from CryCollege.week2.finitefield import PrimeField
+from elliptic_curve import EllipticCurve, AffinePoint
+from week2.finitefield import PrimeField
 
 
 

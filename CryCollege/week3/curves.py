@@ -1,4 +1,4 @@
-from CryCollege.week3.weierstrass_curve import WeierstrassCurve
+from weierstrass_curve import WeierstrassCurve
 from CryCollege.week2.finitefield import PrimeField
 
 

@@ -2,7 +2,7 @@ import pytest
 
 
 def xor(a, b):
-    raise NotImplementedError("TODO: Implement me plx")
+    return a ^ b 
 
 
 class XORCipher:
@@ -14,18 +14,40 @@ class XORCipher:
         if not isinstance(data, bytes):
             raise ValueError("You can only encrypt bytes.")
         
-        """
-        Encrypt the data using the Vigenère cipher
-        """
-        raise NotImplementedError("TODO: Implement me plx")
 
+        keygen = bytearray()
+        for i in range((len(data))):
+            keygen.append(self.key[i % len(self.key)])
+        i = i + 1
+        self.key = keygen
+
+        i = 0
+        l = len(data)
+        result = bytearray()
+
+        for i in range(l):
+            result.append(xor(self.key[i], data[i]))
+        print(result)
+        return result
+    
     def decrypt(self, data):
-        """
-        Decrypt the data using the Vigenère cipher
-        """
-        raise NotImplementedError("TODO: Implement me plx")
+       
+       
+        keygen = bytearray()
+        for i in range((len(data))):
+            keygen.append(self.key[i % len(self.key)])
+        i = i + 1
+        self.key = keygen
+        
+        i = 0
+        l = len(data)
+        result = bytearray()
 
-
+        for i in range(l):
+            result.append(xor(self.key[i], data[i]))
+        print(result)
+        return result
+        
 @pytest.fixture
 def xor_cipher():
     key = bytes.fromhex("AB CD EF AFFE AFFE DEADBEEF")

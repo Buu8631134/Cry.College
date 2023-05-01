@@ -1,3 +1,4 @@
+import sys
 from CryCollege.week2.finitefield import FieldElement
 
 
