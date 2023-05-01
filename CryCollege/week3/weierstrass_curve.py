@@ -1,13 +1,35 @@
 import pytest
+import sys
+
+
 
 from CryCollege.week3.elliptic_curve import EllipticCurve, AffinePoint
 from CryCollege.week2.finitefield import PrimeField
+
+
+def egcd(a, b):
+    if a == 0:
+        return b, 0, 1
+    else:
+        g, y, x = egcd(b % a, a)
+        return g, x - (b // a) * y, y
+
+
+def modinv(a, m):
+    a = a % m
+    g, x, y = egcd(a, m)
+    if g != 1:
+        raise Exception("modular inverse does not exist")
+    else:
+        return x % m
+    
 
 
 class WeierstrassCurve(EllipticCurve):
 
     def __init__(self, a, b, field, generator=None, generator_order=None):
         self.field = field
+        self.mod = field.mod
         self.a = self.field(a)
         self.b = self.field(b)
         self.poif = AffinePoint(self, "infinity", "infinity")
@@ -18,39 +40,62 @@ class WeierstrassCurve(EllipticCurve):
             if not self.is_on_curve(gen):
                 raise ValueError("Supplied generator is not on curve!")
             self.gen = gen
-
+     
+     
+    def inv_val(self, val):
+        """
+        Get the inverse of a given field element using the curves prime field.
+        """
+       
+        return pow(val, self.mod - 2, self.mod) 
+        
     def __call__(self, x, y, order=None):
         return AffinePoint(self, x, y, order)
 
     def calc_y_sq(self, x):
         return x**3 + self.a * x + self.b
-
+    
     def is_on_curve(self, point):
         return point is self.poif or self.calc_y_sq(point.x) == point.y**2
-
+    
+    
+  
     def add(self, P, Q):
         
-       
-
-
-
-       
-
-        """
-         Sum of the points P and Q.
-         Rules: https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication
-        """
         if not (self.is_on_curve(P) and self.is_on_curve(Q)):
             raise ValueError(
                 "Points not on basic_curves {}: {}, {}: {}".format(P, self.is_on_curve(P), Q, self.is_on_curve(Q)))
 
-        raise NotImplementedError("TODO: Implement me plx")
+        # Cases with POIF
+        if P == self.poif:
+            #print("retrunrd Q:")
+            result = Q
+        elif Q == self.poif:
+            #print("retrunrd P")
+            result = P
+        elif Q == self.invert(P):
+            #print("same val invert")
+            return self.poif
+        else:  # without POIF
+            #print("retrunrd Else")
+            if P == Q:
+                slope = (3 * P.x ** 2 + self.a) * self.inv_val(2 * P.y)
+            else:
+                slope = (Q.y - P.y) * self.inv_val(Q.x - P.x)
+            
+            x = (slope ** 2 - P.x - Q.x)
+            y = (slope * (P.x - x) - P.y)
+            
+          
+            result = AffinePoint(self, x, y)
         
-       
+        return result
+
+
+   
 
     def __str__(self):
         return "y^2 = x^3 + {}x + {} over {}".format(self.a, self.b, self.field)
-
 
 
 
@@ -63,6 +108,7 @@ def test_tinycurve():
     # Define a point on the curve with order 65198
     gen = curve(9377, 16650, order=65198)
     (gen.order + 1) * gen == gen
+
 
 
 def test_NIST_P_256():
@@ -83,10 +129,18 @@ def test_NIST_P_256():
     # If we do a scalar multiplication of the generators
     # order with the generator point, we should end up
     # at the neutral element, the point at infinity
+    print("type:", type(curveP256.gen))
     X = curveP256.gen.order * curveP256.gen
+    print(X)
+    print("X", id(X))
+    print("poif:", id(curveP256.poif))
+    print(curveP256.poif)
+    
+    
     assert(X is curveP256.poif)
 
     # Since the point at infinity is the neutral element,
     # with order+1 we should en up at the generator.
     X = (curveP256.gen.order + 1) * curveP256.gen
     assert(X == curveP256.gen)
+  
