@@ -1,10 +1,14 @@
 from CryCollege.week2.finitefield import FieldElement
 
 
+
+WINDOW_SIZE = 4
+
 class AffinePoint:
 
     def __init__(self, curve, x, y, order=None):
         self.curve = curve
+        
         if isinstance(x, int) and isinstance(y, int):
             self.x = curve.field(x)
             self.y = curve.field(y)
@@ -20,6 +24,7 @@ class AffinePoint:
         return self.__add__(other)
 
     def __rmul__(self, scalar):
+        print("called rmul")
         return self.curve.mul(self, scalar)
 
     def __str__(self):
@@ -38,13 +43,29 @@ class AffinePoint:
         return self.curve == other.curve and self.x == other.x and self.y == other.y
 
 
+
+#Rechnung Alice -> BP * A
+#Rechnung Bob -> AP * B 
+#geheimer Punkt x coordinate y irrelevant.
+
 class EllipticCurve:
 
+
+    def inv_val(self, val):
+        """
+        Get the inverse of a given field element using the curves prime field.
+        """
+        
+        print("mod:", self.mod)
+        #return val ** self.mod-2
+        return pow(val, self.mod - 2, self.mod)
+        
     def invert(self, point):
         """
         Invert a point.
         """
         return AffinePoint(self, point.x, (-1 * point.y))
+        
 
     def mul(self, point, scalar):
         """
@@ -52,36 +73,35 @@ class EllipticCurve:
         """
         if isinstance(scalar, FieldElement):
             scalar = scalar.elem
+     
         return self.double_and_add(point, scalar)
+     
+
+    def reverseString(self, str): 
+        return str[::-1]
+     
+    def getBits(self, scalar):
+        return "{0:b}".format(scalar)    
+     
 
     def double_and_add(self, point, scalar):
+       
+        #Do scalar multiplication Q = dP using double and add.
+        #As here: https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
+              
         
-        x = point.x 
-        y = point.y 
-
-        x1 = 0 
-        y1 = 0
-
+        r0 = self.poif
+        r1 = point.copy()
+        
         scalar = list(bin(scalar)[2:])
-        for bit in scalar: 
-            if scalar == 1: 
-                x1 = x
-                y1 = y
-
-                x = x*2 
-                y = y*2 
+        for bit in scalar:
+            if bit == "0":
+                r1 = r0 + r1
+                r0 = r0 + r0
             else: 
-             x = x*2
-             y = y*2
+                r0 = r0 + r1
+                r1 = r1 + r1
+        return r0
 
 
-        point.x = x1
-        point.y = y1   
-
-        return point
-
-        """
-        Do scalar multiplication Q = dP using double and add.
-        As here: https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
-        """
-        raise NotImplementedError("TODO: Implement me plx")
+      

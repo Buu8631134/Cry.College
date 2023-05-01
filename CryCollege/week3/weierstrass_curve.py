@@ -7,23 +7,6 @@ from CryCollege.week3.elliptic_curve import EllipticCurve, AffinePoint
 from CryCollege.week2.finitefield import PrimeField
 
 
-def egcd(a, b):
-    if a == 0:
-        return b, 0, 1
-    else:
-        g, y, x = egcd(b % a, a)
-        return g, x - (b // a) * y, y
-
-
-def modinv(a, m):
-    a = a % m
-    g, x, y = egcd(a, m)
-    if g != 1:
-        raise Exception("modular inverse does not exist")
-    else:
-        return x % m
-    
-
 
 class WeierstrassCurve(EllipticCurve):
 
@@ -79,9 +62,9 @@ class WeierstrassCurve(EllipticCurve):
         else:  # without POIF
             #print("retrunrd Else")
             if P == Q:
-                slope = (3 * P.x ** 2 + self.a) * self.inv_val(2 * P.y)
+                slope = (3 * P.x ** 2 + self.a) /(2 * P.y)
             else:
-                slope = (Q.y - P.y) * self.inv_val(Q.x - P.x)
+                slope = (Q.y - P.y) / (Q.x - P.x)
             
             x = (slope ** 2 - P.x - Q.x)
             y = (slope * (P.x - x) - P.y)
