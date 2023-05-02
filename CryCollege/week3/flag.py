@@ -1,6 +1,5 @@
 
 from CryCollege.week1.cipher import XORCipher
-from flag import FLAG
 from CryCollege.week3.weierstrass_curve import WeierstrassCurve
 from CryCollege.week2.finitefield import PrimeField
 
