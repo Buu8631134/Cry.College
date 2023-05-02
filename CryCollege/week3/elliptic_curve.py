@@ -45,9 +45,6 @@ class AffinePoint:
 
 
 
-#Rechnung Alice -> BP * A
-#Rechnung Bob -> AP * B 
-#geheimer Punkt x coordinate y irrelevant.
 
 class EllipticCurve:
 
@@ -76,21 +73,11 @@ class EllipticCurve:
             scalar = scalar.elem
      
         return self.double_and_add(point, scalar)
-     
-
-    def reverseString(self, str): 
-        return str[::-1]
-     
-    def getBits(self, scalar):
-        return "{0:b}".format(scalar)    
+        
      
 
     def double_and_add(self, point, scalar):
-       
-        #Do scalar multiplication Q = dP using double and add.
-        #As here: https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
-              
-        
+      
         r0 = self.poif
         r1 = point.copy()
         

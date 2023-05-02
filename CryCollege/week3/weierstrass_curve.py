@@ -3,8 +3,8 @@ import sys
 
 
 
-from elliptic_curve import EllipticCurve, AffinePoint
-from week2.finitefield import PrimeField
+from CryCollege.week3.elliptic_curve import EllipticCurve, AffinePoint
+from CryCollege.week2.finitefield import PrimeField
 
 
 
@@ -49,25 +49,21 @@ class WeierstrassCurve(EllipticCurve):
             raise ValueError(
                 "Points not on basic_curves {}: {}, {}: {}".format(P, self.is_on_curve(P), Q, self.is_on_curve(Q)))
 
-        # Cases with POIF
+        
         if P == self.poif:
-            #print("retrunrd Q:")
             result = Q
         elif Q == self.poif:
-            #print("retrunrd P")
             result = P
         elif Q == self.invert(P):
-            #print("same val invert")
             return self.poif
-        else:  # without POIF
-            #print("retrunrd Else")
+        else:  
             if P == Q:
-                slope = (3 * P.x ** 2 + self.a) /(2 * P.y)
+                s = (3 * P.x ** 2 + self.a) /(2 * P.y)
             else:
-                slope = (Q.y - P.y) / (Q.x - P.x)
+                s = (Q.y - P.y) / (Q.x - P.x)
             
-            x = (slope ** 2 - P.x - Q.x)
-            y = (slope * (P.x - x) - P.y)
+            x = (s ** 2 - P.x - Q.x)
+            y = (s * (P.x - x) - P.y)
             
           
             result = AffinePoint(self, x, y)
