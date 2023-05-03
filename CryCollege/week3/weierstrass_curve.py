@@ -1,8 +1,4 @@
 import pytest
-
-
-
-
 from CryCollege.week3.elliptic_curve import EllipticCurve, AffinePoint
 from CryCollege.week2.finitefield import PrimeField
 
@@ -49,7 +45,7 @@ class WeierstrassCurve(EllipticCurve):
             raise ValueError(
                 "Points not on basic_curves {}: {}, {}: {}".format(P, self.is_on_curve(P), Q, self.is_on_curve(Q)))
 
-        
+
         if P == self.poif:
             result = Q
         elif Q == self.poif:
@@ -65,7 +61,7 @@ class WeierstrassCurve(EllipticCurve):
             x = (s ** 2 - P.x - Q.x)
             y = (s * (P.x - x) - P.y)
             
-          
+            
             result = AffinePoint(self, x, y)
         
         return result
