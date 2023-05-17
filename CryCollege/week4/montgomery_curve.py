@@ -20,15 +20,21 @@ class MontgommeryCurve(EllipticCurve):
             return True
         return self.B * P.y ** 2 == (P.x ** 3 + self.A * P.x ** 2 + P.x)
 
+    
+
+    
     def add(self, P, Q):
+       
+        # Wie bei weierstrass, nur mit der Formel für die montgomery_curve also die Berechnung im affinen Raum
+        
+        
         """
         Point addition of P and Q on this Montgommery Curve
         """
         if not (self.is_on_curve(P) and self.is_on_curve(Q)):
             raise ValueError("Points not on curve.")
         
-        raise NotImplementedError("TODO: Implement me plx")
-
+        
         return AffinePoint(self, x_new, y_new)
 
     def __str__(self):

@@ -11,6 +11,10 @@ ORDER = 0x1000000000000000000000000000000014def9dea2f79cd65812631a5cf5d3ed
 FIELD = PrimeField(PRIME)
 
 
+def square(x):
+    return pow(x,2)
+
+
 class XZPoint:
 
     def __init__(self, x, z=1):
@@ -26,25 +30,34 @@ class XZPoint:
         return self.x * self.z**-1
 
     def _double(self):
-        """
-        Double function used to calculate the x value of 2P.
-        Since z1 is set to 1, this has to be used in the montgommery latter
-        where the x value of the base point is used as x1 in the add step.
-        """
-        raise NotImplementedError("TODO: Implement me plx")
+       
+       
+       four_x_z = (pow((self.x+ self.z),2) - pow((self.x-self.z),2))
+
+       x_new = (pow((self.x+ self.z),2) * pow((self.x-self.z),2))
+
+       z_new = (four_x_z) * (  (pow((self.x - self.z),2)) + ((A-2)//4) *(four_x_z))
+
+
+       return XZPoint(x_new, z_new)
+
+
+      
+
 
     def _add(self, Q, base):
-        """
-        Add function used to calculate P + Q.
-        This uses the value x1 = x value of base point.
-        This works since we use the montgommery ladder and
-        r[1] is always r[0] + base point.
-        So, we know that r[1] - r[0] = BASE_POINT, so we can just set x1 = BASE_POINT
-        :param Q: Point to add to this point
-        :param base: This is the base point, in other words r[1] - r[0], P - Q
-        :return: Jacobian point P + Q
-        """
-        raise NotImplementedError("TODO: Implement me plx")
+        x = (self.x - self.z) * (Q.x + Q.z) + (self.x + self.z) * (Q.x - Q.z) 
+        z = (self.x - self.z) * (Q.x + Q.z) + (self.x + self.z) * (Q.x - Q.z) 
+
+        
+        x1 = x * x 
+        z1 = z * z 
+       
+        x_new = x1
+        z_new = base * z1
+
+        return XZPoint(x_new ,z_new)
+
 
     def copy(self):
         return XZPoint(self.x, self.z)

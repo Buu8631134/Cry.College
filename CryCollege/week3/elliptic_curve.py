@@ -77,7 +77,7 @@ class EllipticCurve:
      
 
     def double_and_add(self, point, scalar):
-        #poif ist in anderen Curves nicht vorhanden (Bei curves ohne poif führt dies zu fehlern zu fehlern )
+        #poif ist in anderen Curves nicht vorhanden (Bei curves ohne poif führt dies zu fehlern)
         r0 = self.poif
         r1 = point.copy()
         
